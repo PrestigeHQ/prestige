@@ -11,4 +11,5 @@ npm-debug.log
 .env
 .env.backup
 .env.old
+.phpunit.result.cache
 package-lock.json
