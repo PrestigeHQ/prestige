@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -87,6 +87,7 @@ return [
     */
 
     'failed' => [
+        'driver' => env('QUEUE_FAILED_DRIVER', 'database'),
         'database' => env('DB_DRIVER', 'sqlite'),
         'table'    => 'failed_jobs',
     ],

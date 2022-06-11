@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -46,7 +46,7 @@ return [
     | may even configure multiple disks of the same driver. Defaults have
     | been setup for each driver as an example of the required options.
     |
-    | Supported Drivers: "local", "ftp", "s3", "rackspace"
+    | Supported Drivers: "local", "ftp", "s3"
     |
     */
 

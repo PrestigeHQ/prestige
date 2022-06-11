@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -8,6 +8,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+use Illuminate\Support\Str;
 
 return [
 
@@ -104,13 +106,27 @@ return [
 
     'redis' => [
 
-        'client' => 'predis',
+        'client' => 'phpredis',
+
+        'options' => [
+            'cluster' => env('REDIS_CLUSTER', 'redis'),
+            'prefix'  => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        ],
 
         'default' => [
+            'url'      => env('REDIS_URL'),
             'host'     => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port'     => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DATABASE', 0),
+        ],
+
+        'cache' => [
+            'url'      => env('REDIS_URL'),
+            'host'     => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port'     => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 1),
         ],
 
     ],

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
+use Monolog\Handler\SyslogUdpHandler;
 
 return [
 
@@ -45,6 +47,7 @@ return [
         'stack' => [
             'driver'   => 'stack',
             'channels' => ['single'],
+            'ignore_exceptions' => false,
         ],
 
         'single' => [
@@ -93,6 +96,11 @@ return [
         'debug' => [
             'driver'   => 'stack',
             'channels' => ['bugsnag', 'single'],
+        ],
+
+        'null' => [
+            'driver' => 'monolog',
+            'handler' => NullHandler::class,
         ],
     ],
 

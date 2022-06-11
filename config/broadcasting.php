@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -45,7 +45,8 @@ return [
             'secret'  => env('PUSHER_APP_SECRET'),
             'app_id'  => env('PUSHER_APP_ID'),
             'options' => [
-                //
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS' => true,
             ],
         ],
 
