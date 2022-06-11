@@ -9,7 +9,11 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
+.env.production
+.env.canary
+.env.back
 .env.backup
+.env.staging
 .env.old
 .phpunit.result.cache
 package-lock.json
