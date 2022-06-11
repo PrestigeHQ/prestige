@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -74,7 +74,7 @@ class Releases implements ReleasesContract
      *
      * @return string
      */
-    public function latest()
+    public function latest(): string
     {
         $release = $this->cache->remember('release.latest', 720, function () {
             $headers = ['Accept' => 'application/vnd.github.v3+json', 'User-Agent' => defined('CACHET_VERSION') ? 'cachet/'.constant('CACHET_VERSION') : 'cachet'];
@@ -85,7 +85,7 @@ class Releases implements ReleasesContract
 
             event(new SystemCheckedForUpdatesEvent());
 
-            return json_decode((new Client())->get($this->url, [
+            return json_decode((string)(new Client())->get($this->url, [
                 'headers' => $headers,
             ])->getBody(), true);
         });
