@@ -72,9 +72,9 @@ class Releases implements ReleasesContract
     /**
      * Returns the latest release.
      *
-     * @return string
+     * @return array
      */
-    public function latest(): string
+    public function latest(): array
     {
         $release = $this->cache->remember('release.latest', 720, function () {
             $headers = ['Accept' => 'application/vnd.github.v3+json', 'User-Agent' => defined('CACHET_VERSION') ? 'cachet/'.constant('CACHET_VERSION') : 'cachet'];
