@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -71,11 +71,11 @@ class Credits implements CreditsContract
      *
      * @return array|null
      */
-    public function latest()
+    public function latest(): ?array
     {
         $result = $this->cache->remember('credits', 2880, function () {
             try {
-                return json_decode((new Client())->get($this->url, [
+                return json_decode((string)(new Client())->get($this->url, [
                     'headers' => ['Accept' => 'application/json', 'User-Agent' => defined('CACHET_VERSION') ? 'cachet/'.constant('CACHET_VERSION') : 'cachet'],
                 ])->getBody(), true);
             } catch (Exception $e) {
