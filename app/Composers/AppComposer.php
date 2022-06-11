@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -66,7 +66,7 @@ class AppComposer
         } else {
             $about = '';
         }
-        
+
         $view->withAboutApp($about);
         $view->withAppAnalytics($this->config->get('setting.app_analytics'));
         $view->withAppAnalyticsGoSquared($this->config->get('setting.app_analytics_gs'));

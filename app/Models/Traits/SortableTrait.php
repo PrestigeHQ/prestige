@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -29,7 +29,7 @@ trait SortableTrait
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSort(Builder $query, $column, $direction)
+    public function scopeSort(Builder $query, string $column, string $direction): Builder
     {
         if (!in_array($column, $this->sortable)) {
             return $query;

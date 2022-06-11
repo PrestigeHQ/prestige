@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -14,6 +14,8 @@ namespace CachetHQ\Cachet\Models\Traits;
 use CachetHQ\Cachet\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection;
 
 /**
  * This is the has tags trait.
@@ -33,7 +35,7 @@ trait HasTags
      *
      * @return void
      */
-    public static function bootHasTags()
+    public static function bootHasTags(): void
     {
         static::created(function (Model $taggableModel) {
             if (count($taggableModel->queuedTags) > 0) {
@@ -55,7 +57,7 @@ trait HasTags
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function tags()
+    public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
@@ -80,7 +82,7 @@ trait HasTags
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAllTags(Builder $query, $tags)
+    public function scopeWithAllTags(Builder $query, $tags): Builder
     {
         $tags = static::convertToTags($tags);
 
@@ -99,7 +101,7 @@ trait HasTags
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAnyTags(Builder $query, $tags)
+    public function scopeWithAnyTags(Builder $query, $tags): Builder
     {
         $tags = static::convertToTags($tags);
 
@@ -183,7 +185,7 @@ trait HasTags
      *
      * @return \Illuminate\Support\Collection
      */
-    protected static function convertToTags($values)
+    protected static function convertToTags($values): Collection
     {
         return collect($values)->map(function ($value) {
             if ($value instanceof Tag) {

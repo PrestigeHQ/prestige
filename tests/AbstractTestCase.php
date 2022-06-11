@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -40,7 +40,7 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return \CachetHQ\Tests\Cachet\AbstractTestCase
      */
-    protected function signIn(User $user = null)
+    protected function signIn(User $user = null): \CachetHQ\Tests\Cachet\AbstractTestCase
     {
         $this->user = $user ?: $this->createUser();
 
@@ -56,7 +56,7 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return \CachetHQ\Cachet\Models\User
      */
-    protected function createUser($properties = [])
+    protected function createUser($properties = []): \CachetHQ\Cachet\Models\User
     {
         return factory(User::class)->create($properties);
     }
@@ -66,7 +66,7 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return \CachetHQ\Tests\Cachet\AbstractTestCase
      */
-    protected function setupConfig()
+    protected function setupConfig(): \CachetHQ\Tests\Cachet\AbstractTestCase
     {
         $env = $this->app->environment();
         $repo = $this->app->make(Repository::class);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -20,6 +20,8 @@ use CachetHQ\Cachet\Presenters\ComponentPresenter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 class Component extends Model implements HasPresenter
@@ -125,7 +127,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function group()
+    public function group(): BelongsTo
     {
         return $this->belongsTo(ComponentGroup::class, 'group_id', 'id');
     }
@@ -135,7 +137,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function incidents()
+    public function incidents(): HasMany
     {
         return $this->hasMany(Incident::class, 'component_id', 'id');
     }
@@ -148,7 +150,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeStatus(Builder $query, $status)
+    public function scopeStatus(Builder $query, int $status): Builder
     {
         return $query->where('status', '=', $status);
     }
@@ -161,7 +163,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNotStatus(Builder $query, $status)
+    public function scopeNotStatus(Builder $query, int $status): Builder
     {
         return $query->where('status', '<>', $status);
     }
@@ -173,7 +175,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeEnabled(Builder $query)
+    public function scopeEnabled(Builder $query): Builder
     {
         return $query->where('enabled', '=', true);
     }
@@ -186,10 +188,10 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAuthenticated(Builder $query, $authenticated)
+    public function scopeAuthenticated(Builder $query, bool $authenticated): Builder
     {
-        return $query->when(!$authenticated, function (Builder $query) {
-            return $query->whereDoesntHave('group', function (Builder $query) {
+        return $query->when(!$authenticated, function (Builder $query): Builder {
+            return $query->whereDoesntHave('group', function (Builder $query): Builder {
                 $query->where('visible', ComponentGroup::VISIBLE_AUTHENTICATED);
             });
         });
@@ -202,7 +204,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeDisabled(Builder $query)
+    public function scopeDisabled(Builder $query): Builder
     {
         return $query->where('enabled', '=', false);
     }
@@ -214,7 +216,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUngrouped(Builder $query)
+    public function scopeUngrouped(Builder $query): Builder
     {
         return $query->enabled()
             ->where('group_id', '=', 0)
@@ -229,7 +231,7 @@ class Component extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeGrouped(Builder $query)
+    public function scopeGrouped(Builder $query): Builder
     {
         return $query->enabled()
             ->where('group_id', '>', 0)
@@ -241,7 +243,7 @@ class Component extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return ComponentPresenter::class;
     }

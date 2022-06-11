@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -13,6 +13,8 @@ namespace CachetHQ\Cachet\Models;
 
 use AltThree\Validator\ValidatingTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ScheduleComponent extends Model
 {
@@ -56,7 +58,7 @@ class ScheduleComponent extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function schedule()
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class);
     }
@@ -66,7 +68,7 @@ class ScheduleComponent extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function component()
+    public function component(): HasOne
     {
         return $this->hasOne(Component::class);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -65,7 +65,7 @@ class Beacon implements BeaconContract
      *
      * @return bool
      */
-    public function enabled()
+    public function enabled(): bool
     {
         return $this->config->get('cachet.beacon');
     }
@@ -75,7 +75,7 @@ class Beacon implements BeaconContract
      *
      * @return void
      */
-    public function send()
+    public function send(): void
     {
         // We don't want any accidental sending of beacons if the installation has explicitly said no.
         if (!$this->enabled()) {

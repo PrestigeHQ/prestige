@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -24,7 +24,7 @@ if (!function_exists('setting')) {
      *
      * @return mixed
      */
-    function setting($name, $default = null)
+    function setting(string $name, $default = null)
     {
         static $settings = [];
 
@@ -46,7 +46,7 @@ if (!function_exists('set_active')) {
      *
      * @return string
      */
-    function set_active($path, array $classes = [], $active = 'active')
+    function set_active($path, array $classes = [], string $active = 'active'): string
     {
         if (Request::is($path)) {
             $classes[] = $active;
@@ -64,9 +64,9 @@ if (!function_exists('formatted_date')) {
      *
      * @param string $date
      *
-     * @return \Jenssegers\Date\Date
+     * @return string
      */
-    function formatted_date($date)
+    function formatted_date(string $date): string
     {
         $dateFormat = Config::get('setting.date_format', 'jS F Y');
 
@@ -83,7 +83,7 @@ if (!function_exists('color_darken')) {
      *
      * @return string
      */
-    function color_darken($hex, $percent)
+    function color_darken(string $hex, int $percent): string
     {
         $hex = preg_replace('/[^0-9a-f]/i', '', $hex);
         $new_hex = '#';
@@ -95,7 +95,7 @@ if (!function_exists('color_darken')) {
         for ($i = 0; $i < 3; $i++) {
             $dec = hexdec(substr($hex, $i * 2, 2));
             $dec = min(max(0, $dec + $dec * $percent), 255);
-            $new_hex .= str_pad(dechex($dec), 2, 0, STR_PAD_LEFT);
+            $new_hex .= str_pad(dechex($dec), 2, '0', STR_PAD_LEFT);
         }
 
         return $new_hex;
@@ -112,7 +112,7 @@ if (!function_exists('color_contrast')) {
      *
      * @return string
      */
-    function color_contrast($hexcolor)
+    function color_contrast(string $hexcolor): string
     {
         $r = ctype_xdigit(substr($hexcolor, 0, 2));
         $g = ctype_xdigit(substr($hexcolor, 2, 2));
@@ -133,7 +133,7 @@ if (!function_exists('cachet_route_generator')) {
      *
      * @return string
      */
-    function cachet_route_generator($name, $method = 'get', $domain = 'core')
+    function cachet_route_generator(string $name, string $method = 'get', string $domain = 'core'): string
     {
         return "{$domain}::{$method}:{$name}";
     }
@@ -150,7 +150,7 @@ if (!function_exists('cachet_route')) {
      *
      * @return string
      */
-    function cachet_route($name, $parameters = [], $method = 'get', $domain = 'core')
+    function cachet_route(string $name, array $parameters = [], string $method = 'get', string $domain = 'core'): string
     {
         return app('url')->route(
             cachet_route_generator($name, $method, $domain),
@@ -173,7 +173,7 @@ if (!function_exists('cachet_redirect')) {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    function cachet_redirect($name, $parameters = [], $status = 302, $headers = [], $method = 'get', $domain = 'core')
+    function cachet_redirect(string $name, array $parameters = [], int $status = 302, array $headers = [], string $method = 'get', string $domain = 'core')
     {
         $url = cachet_route($name, $parameters, $method, $domain);
 
@@ -189,7 +189,7 @@ if (!function_exists('execute')) {
      *
      * @return void
      */
-    function execute($command)
+    function execute(object $command)
     {
         return app(Dispatcher::class)->dispatchNow($command);
     }

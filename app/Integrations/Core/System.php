@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -58,7 +58,7 @@ class System implements SystemContract
      *
      * @return array
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $includePrivate = $this->auth->check();
 
@@ -109,7 +109,7 @@ class System implements SystemContract
      *
      * @return bool
      */
-    public function canNotifySubscribers()
+    public function canNotifySubscribers(): bool
     {
         $maintenancePeriods = Schedule::inProgress()->count();
         if ($maintenancePeriods === 0) {
@@ -124,7 +124,7 @@ class System implements SystemContract
      *
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return CACHET_VERSION;
     }
@@ -134,7 +134,7 @@ class System implements SystemContract
      *
      * @return string
      */
-    public function getTablePrefix()
+    public function getTablePrefix(): string
     {
         $driver = $this->config->get('database.default');
 

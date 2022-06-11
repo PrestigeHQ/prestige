@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -15,6 +15,7 @@ use AltThree\Validator\ValidatingTrait;
 use CachetHQ\Cachet\Models\Traits\SortableTrait;
 use CachetHQ\Cachet\Presenters\IncidentUpdatePresenter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
@@ -79,7 +80,7 @@ class IncidentUpdate extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function incident()
+    public function incident(): BelongsTo
     {
         return $this->belongsTo(Incident::class);
     }
@@ -89,7 +90,7 @@ class IncidentUpdate extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -99,7 +100,7 @@ class IncidentUpdate extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return IncidentUpdatePresenter::class;
     }

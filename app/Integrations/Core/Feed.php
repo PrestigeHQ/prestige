@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -70,7 +70,7 @@ class Feed implements FeedContract
      *
      * @return array|null
      */
-    public function latest()
+    public function latest(): ?array
     {
         $result = $this->cache->remember('feeds', 720, function () {
             try {

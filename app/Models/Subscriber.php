@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -83,7 +83,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return void
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -99,7 +99,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscriptions()
+    public function subscriptions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Subscription::class);
     }
@@ -111,7 +111,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeIsVerified(Builder $query)
+    public function scopeIsVerified(Builder $query): Builder
     {
         return $query->whereNotNull('verified_at');
     }
@@ -123,7 +123,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeIsGlobal(Builder $query)
+    public function scopeIsGlobal(Builder $query): Builder
     {
         return $query->where('global', '=', true);
     }
@@ -136,7 +136,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForComponent(Builder $query, $component_id)
+    public function scopeForComponent(Builder $query, int $component_id): Builder
     {
         return $query->select('subscribers.*')
             ->join('subscriptions', 'subscribers.id', '=', 'subscriptions.subscriber_id')
@@ -148,17 +148,17 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return bool
      */
-    public function getIsVerifiedAttribute()
+    public function getIsVerifiedAttribute(): bool
     {
         return $this->verified_at !== null;
     }
 
     /**
-     * Returns an new verify code.
+     * Returns a new verify code.
      *
      * @return string
      */
-    public static function generateVerifyCode()
+    public static function generateVerifyCode(): string
     {
         return Str::random(42);
     }
@@ -168,7 +168,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return string
      */
-    public function routeNotificationForNexmo()
+    public function routeNotificationForNexmo(): string
     {
         return $this->phone_number;
     }
@@ -178,7 +178,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return string
      */
-    public function routeNotificationForSlack()
+    public function routeNotificationForSlack(): string
     {
         return $this->slack_webhook_url;
     }
@@ -188,7 +188,7 @@ class Subscriber extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return SubscriberPresenter::class;
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -14,6 +14,7 @@ namespace CachetHQ\Cachet\Models;
 use AltThree\Validator\ValidatingTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
@@ -54,7 +55,7 @@ class Subscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subscriber()
+    public function subscriber(): BelongsTo
     {
         return $this->belongsTo(Subscriber::class);
     }
@@ -62,9 +63,9 @@ class Subscription extends Model
     /**
      * Get the component relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function component()
+    public function component(): BelongsTo
     {
         return $this->belongsTo(Component::class);
     }
@@ -77,7 +78,7 @@ class Subscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForSubscriber(Builder $query, $subscriber_id)
+    public function scopeForSubscriber(Builder $query, int $subscriber_id): Builder
     {
         return $query->where('subscriber_id', '=', $subscriber_id);
     }
@@ -90,7 +91,7 @@ class Subscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForComponent(Builder $query, $component_id)
+    public function scopeForComponent(Builder $query, int $component_id): Builder
     {
         return $query->where('component_id', '=', $component_id);
     }
@@ -103,11 +104,11 @@ class Subscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeIsVerifiedForComponent(Builder $query, $component_id)
+    public function scopeIsVerifiedForComponent(Builder $query, int $component_id): Builder
     {
         return $query->select('subscriptions.*')
             ->join('subscribers', 'subscriptions.subscriber_id', '=', 'subscribers.id')
-            ->where(function ($query) {
+            ->where(function ($query) use ($component_id) {
                 $query->where('subscriptions.component_id', '=', $component_id)
                     ->orWhere('subscribers.global');
             })

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -17,6 +17,8 @@ use CachetHQ\Cachet\Models\Traits\SortableTrait;
 use CachetHQ\Cachet\Presenters\ComponentGroupPresenter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
@@ -124,7 +126,7 @@ class ComponentGroup extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function components()
+    public function components(): HasMany
     {
         return $this->hasMany(Component::class, 'group_id', 'id');
     }
@@ -134,7 +136,7 @@ class ComponentGroup extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function incidents()
+    public function incidents(): HasManyThrough
     {
         return $this->hasManyThrough(Incident::class, Component::class, 'id', 'component_id');
     }
@@ -142,9 +144,9 @@ class ComponentGroup extends Model implements HasPresenter
     /**
      * Return all of the enabled components.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function enabled_components()
+    public function enabled_components(): HasMany
     {
         return $this->components()->enabled()->orderBy('order');
     }
@@ -152,9 +154,9 @@ class ComponentGroup extends Model implements HasPresenter
     /**
      * Return all of the enabled components ordered by status.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function enabled_components_lowest()
+    public function enabled_components_lowest(): HasMany
     {
         return $this->components()->enabled()->orderBy('status', 'desc');
     }
@@ -164,7 +166,7 @@ class ComponentGroup extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return ComponentGroupPresenter::class;
     }
@@ -176,7 +178,7 @@ class ComponentGroup extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible(Builder $query)
+    public function scopeVisible(Builder $query): Builder
     {
         return $query->where('visible', '=', self::VISIBLE_GUEST);
     }
@@ -189,7 +191,7 @@ class ComponentGroup extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUsed(Builder $query, Collection $usedComponentGroups)
+    public function scopeUsed(Builder $query, Collection $usedComponentGroups): Builder
     {
         return $query->whereIn('id', $usedComponentGroups)
             ->orderBy('order');

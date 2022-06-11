@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -13,6 +13,7 @@ namespace CachetHQ\Cachet\Models;
 
 use AltThree\Validator\ValidatingTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
 
 class IncidentTemplate extends Model
@@ -52,7 +53,7 @@ class IncidentTemplate extends Model
      *
      * @return void
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -71,7 +72,7 @@ class IncidentTemplate extends Model
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function forSlug($slug, $columns = ['*'])
+    public static function forSlug(string $slug, array $columns = ['*']): Builder
     {
         $template = static::where('slug', '=', $slug)->firstOrFail($columns);
 

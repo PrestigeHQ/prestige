@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -12,6 +12,7 @@
 namespace CachetHQ\Cachet\Models\Traits;
 
 use CachetHQ\Cachet\Models\Meta;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * This is the has meta trait.
@@ -25,7 +26,7 @@ trait HasMeta
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function meta()
+    public function meta(): MorphMany
     {
         return $this->morphMany(Meta::class, 'meta');
     }

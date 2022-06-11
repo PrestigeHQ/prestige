@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 class Schedule extends Model implements HasPresenter
@@ -138,7 +139,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function components()
+    public function components(): HasMany
     {
         return $this->hasMany(ScheduleComponent::class);
     }
@@ -150,7 +151,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUncompleted(Builder $query)
+    public function scopeUncompleted(Builder $query): Builder
     {
         return $query->whereIn('status', [self::UPCOMING, self::IN_PROGRESS])->where(function (Builder $query) {
             return $query->whereNull('completed_at');
@@ -164,7 +165,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeInProgress(Builder $query)
+    public function scopeInProgress(Builder $query): Builder
     {
         return $query->where('scheduled_at', '<=', Carbon::now())->where('status', '<>', self::COMPLETE)->where(function ($query) {
             $query->whereNull('completed_at');
@@ -178,7 +179,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeScheduledInFuture($query)
+    public function scopeScheduledInFuture(Builder $query): Builder
     {
         return $query->whereIn('status', [self::UPCOMING, self::IN_PROGRESS])->where('scheduled_at', '>=', Carbon::now());
     }
@@ -190,7 +191,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeScheduledInPast($query)
+    public function scopeScheduledInPast(Builder $query): Builder
     {
         return $query->whereIn('status', [self::UPCOMING, self::IN_PROGRESS])->where('scheduled_at', '<=', Carbon::now());
     }
@@ -202,7 +203,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeCompletedInPast($query)
+    public function scopeCompletedInPast(Builder $query): Builder
     {
         return $query->where('status', '=', self::COMPLETE)->where('completed_at', '<=', Carbon::now());
     }
@@ -212,7 +213,7 @@ class Schedule extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return SchedulePresenter::class;
     }

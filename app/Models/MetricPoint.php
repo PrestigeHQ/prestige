@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -16,6 +16,7 @@ use CachetHQ\Cachet\Presenters\MetricPointPresenter;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
@@ -85,7 +86,7 @@ class MetricPoint extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function metric()
+    public function metric(): BelongsTo
     {
         return $this->belongsTo(Metric::class);
     }
@@ -95,7 +96,7 @@ class MetricPoint extends Model implements HasPresenter
      *
      * @return int
      */
-    public function getCalculatedValueAttribute()
+    public function getCalculatedValueAttribute(): int
     {
         return $this->value * $this->counter;
     }
@@ -107,7 +108,7 @@ class MetricPoint extends Model implements HasPresenter
      *
      * @return string|void
      */
-    public function setCreatedAtAttribute($createdAt)
+    public function setCreatedAtAttribute(string $createdAt)
     {
         if (!$createdAt) {
             return;
@@ -120,7 +121,7 @@ class MetricPoint extends Model implements HasPresenter
         $timestamp = $createdAt->format('U');
         $timestamp = 30 * round($timestamp / 30);
 
-        $date = Carbon::createFromFormat('U', $timestamp)->toDateTimeString();
+        $date = Carbon::createFromFormat('U', (string)$timestamp)->toDateTimeString();
 
         $this->attributes['created_at'] = $date;
 
@@ -132,7 +133,7 @@ class MetricPoint extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return MetricPointPresenter::class;
     }

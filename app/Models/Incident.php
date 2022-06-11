@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -19,6 +19,8 @@ use CachetHQ\Cachet\Models\Traits\SortableTrait;
 use CachetHQ\Cachet\Presenters\IncidentPresenter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
@@ -180,9 +182,9 @@ class Incident extends Model implements HasPresenter
     /**
      * Get the component relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function component()
+    public function component(): BelongsTo
     {
         return $this->belongsTo(Component::class, 'component_id', 'id');
     }
@@ -192,7 +194,7 @@ class Incident extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function updates()
+    public function updates(): HasMany
     {
         return $this->hasMany(IncidentUpdate::class)->orderBy('created_at', 'desc');
     }
@@ -202,7 +204,7 @@ class Incident extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -214,7 +216,7 @@ class Incident extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible(Builder $query)
+    public function scopeVisible(Builder $query): Builder
     {
         return $query->where('visible', '=', 1);
     }
@@ -226,7 +228,7 @@ class Incident extends Model implements HasPresenter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeStickied(Builder $query)
+    public function scopeStickied(Builder $query): Builder
     {
         return $query->where('stickied', '=', true);
     }
@@ -236,7 +238,7 @@ class Incident extends Model implements HasPresenter
      *
      * @return bool
      */
-    public function getIsResolvedAttribute()
+    public function getIsResolvedAttribute(): bool
     {
         if ($updates = $this->updates->first()) {
             return (int) $updates->status === self::FIXED;
@@ -250,7 +252,7 @@ class Incident extends Model implements HasPresenter
      *
      * @return string
      */
-    public function getPresenterClass()
+    public function getPresenterClass(): string
     {
         return IncidentPresenter::class;
     }

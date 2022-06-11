@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -114,7 +114,7 @@ class User extends Authenticatable
      *
      * @return void
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -132,7 +132,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAdmins(Builder $query)
+    public function scopeAdmins(Builder $query): Builder
     {
         return $query->where('level', '=', self::LEVEL_ADMIN);
     }
@@ -144,7 +144,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive(Builder $query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('active', '=', true);
     }
@@ -156,7 +156,7 @@ class User extends Authenticatable
      *
      * @return \CachetHQ\Cachet\Models\User
      */
-    public function setPasswordAttribute($password)
+    public function setPasswordAttribute(string $password): User
     {
         $this->attributes['password'] = Hash::make($password);
 
@@ -173,7 +173,7 @@ class User extends Authenticatable
      *
      * @return \CachetHQ\Cachet\Models\User
      */
-    public static function findByApiToken($token, $columns = ['*'])
+    public static function findByApiToken(string $token, array $columns = ['*']): User
     {
         $user = static::where('api_key', $token)->firstOrFail($columns);
 
@@ -185,7 +185,7 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public static function generateApiKey()
+    public static function generateApiKey(): string
     {
         return Str::random(20);
     }
@@ -195,7 +195,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function getIsAdminAttribute()
+    public function getIsAdminAttribute(): bool
     {
         return $this->level == self::LEVEL_ADMIN;
     }
@@ -205,8 +205,8 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function getHasTwoFactorAttribute()
+    public function getHasTwoFactorAttribute(): bool
     {
-        return trim($this->google_2fa_secret) !== '';
+        return trim((string)$this->google_2fa_secret) !== '';
     }
 }

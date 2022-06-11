@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -13,6 +13,7 @@ namespace CachetHQ\Cachet\Models;
 
 use AltThree\Validator\ValidatingTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * This is the incident component model class.
@@ -59,9 +60,9 @@ class IncidentComponent extends Model
     /**
      * Get the incident relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function incident()
+    public function incident(): BelongsTo
     {
         return $this->belongsTo(Incident::class);
     }
@@ -69,9 +70,9 @@ class IncidentComponent extends Model
     /**
      * Get the component relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function component()
+    public function component(): BelongsTo
     {
         return $this->belongsTo(Component::class);
     }

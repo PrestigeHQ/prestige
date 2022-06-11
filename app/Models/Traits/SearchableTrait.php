@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of Cachet.
@@ -28,7 +28,7 @@ trait SearchableTrait
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSearch(Builder $query, array $search = [])
+    public function scopeSearch(Builder $query, array $search = []): Builder
     {
         if (empty($search)) {
             return $query;
